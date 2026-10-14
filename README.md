@@ -108,6 +108,21 @@ pc-performance-monitor/
 
 Runtime files (`performance_report.txt`, `performance_history.db`, `stale_report.json`) are created in your working directory and git-ignored — your process history never lands in the repo.
 
+## Field results (one evening, one laptop)
+
+HP Pavilion Gaming 15, Windows 11 Pro, 17 GB RAM, 255 GB NVMe + 500 GB HDD. Starting state: RAM ~67% with spikes to 73%, C: at **8.3% free (CRITICAL)**.
+
+| # | Finding | Action | Result |
+|---|---|---|---|
+| 1 | Orphaned `cmd.exe` holding 2 GB, spinning at 333% CPU | Verified parent dead + no children, killed PID | RAM 66.4→63.5%, total CPU 25→4.7% |
+| 2 | 33 GB of Ollama models on C: | Moved to E:, set `OLLAMA_MODELS` (tray-app junction failed; direct serve worked) | C: 8.3→22.3% free, all 5 models intact |
+| 3 | LinkedIn tab renderer ballooning to 2.3 GB + 26 extensions, all enabled | Blocklisted extensions via policy, restarted Edge | RAM 73.2→60.8%, extension procs 7→0 |
+| 4 | Stale audit: WPS 1.6 GB, Cursor 1 GB, OneDrive app 1.6 GB, Mafia II ISO 3.1 GB, old recordings/backups ~14 GB | Uninstalled apps (files kept), queued locked leftovers for logon cleanup | C: →25.7% free and climbing |
+
+End of session: RAM ~60% idle, CPU ~3%, C: healthy, 10 reports logged, 3 fixes recorded with outcomes, 3 autonomous rules proposed (unapproved).
+
+*(Screenshot suggestion: run `history --limit 3` or open `performance_report.txt` next to Task Manager's Performance tab.)*
+
 ## Notes & limits
 
 - File "untouched" uses last-write time: Windows disables last-access tracking by default, so opens can't be measured.
