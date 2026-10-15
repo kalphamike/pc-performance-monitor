@@ -468,6 +468,9 @@ def main():
     c.add_argument("rule_id", type=int)
     c = sub.add_parser("stale", help="unused-app + untouched-file audit (weekly job)")
     c.add_argument("--min-mb", type=int, default=100)
+    c = sub.add_parser("watch", help="tripwire: alert when RAM crosses threshold (5-min job)")
+    c.add_argument("--threshold", type=float, default=87.0)
+    c.add_argument("--clear", type=float, default=82.0)
 
     args = ap.parse_args()
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -544,6 +547,40 @@ def main():
             print(f"  APP {_a['gb']} GB last={_a['last_run']} {_a['name'][:60]}")
         for _fl in _rep.get("files", [])[:5]:
             print(f"  FILE {_fl['gb']} GB mod={_fl['modified']} {_fl['path']}")
+    elif args.cmd == "watch":
+        # Single-shot tripwire (scheduler repeats it): alert on crossing above
+        # --threshold, all-clear below --clear (hysteresis stops flapping).
+        _mem = psutil.virtual_memory()
+        _sp = os.path.join(os.path.dirname(os.path.abspath(args.db)), "ram_watch_state.json")
+        try:
+            with open(_sp, encoding="utf-8") as _f:
+                _breached = json.load(_f).get("in_breach", False)
+        except (OSError, ValueError):
+            _breached = False
+        _stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        if _mem.percent >= args.threshold and not _breached:
+            _top = sorted(psutil.process_iter(["pid", "name", "memory_percent"]),
+                          key=lambda p: -(p.info.get("memory_percent") or 0))[:3]
+            _tops = ", ".join(f"{p.info.get('name')} {round(p.info.get('memory_percent') or 0, 1)}%"
+                              for p in _top)
+            _msg = (f"[{_stamp}] RAM ALERT {_mem.percent}% >= {args.threshold}% "
+                    f"(free {round(_mem.available / 1e9, 2)} GB). Top: {_tops}")
+            print(_msg)
+            with open(args.report, "a", encoding="utf-8") as _f:
+                _f.write(_msg + "\n")
+            notify(f"RAM ALERT {_mem.percent}% - top: {_tops}")
+            with open(_sp, "w", encoding="utf-8") as _f:
+                json.dump({"in_breach": True, "since": _stamp, "pct": _mem.percent}, _f)
+        elif _mem.percent <= args.clear and _breached:
+            _msg = f"[{_stamp}] RAM recovered to {_mem.percent}% (below {args.clear}%)"
+            print(_msg)
+            with open(args.report, "a", encoding="utf-8") as _f:
+                _f.write(_msg + "\n")
+            notify(f"RAM back to normal: {_mem.percent}%")
+            with open(_sp, "w", encoding="utf-8") as _f:
+                json.dump({"in_breach": False}, _f)
+        else:
+            print(f"RAM {_mem.percent}% (breach={_breached}) - no change")
 
 
 if __name__ == "__main__":

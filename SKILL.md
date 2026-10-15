@@ -19,6 +19,7 @@ Default paths: report `performance_report.txt`, history `performance_history.db`
 
 ### 1b. Learn from history (every check, every fix)
 - After each check, `recall` is automatic for flagged issues: past fixes + success rates are shown with the report.
+- RAM tripwire: `watch --threshold 87 --clear 82` is a single-shot check for a 5-minute scheduled task. It toasts + logs only on crossing above threshold or recovering below clear (hysteresis stops flapping); state lives in `ram_watch_state.json` next to the DB.
 - Headless-app flag: every check ranks windowless background processes and raises `headless_app` when a browser runs with zero windows (lingering after close).
 - Stale watch: `stale` audits apps not run in 90d (Uninstall registry + Prefetch/UserAssist evidence) and files >=100MB untouched 180d (write-time proxy; Windows disables access-time tracking). Results cache to `stale_report.json`, refreshed weekly by the `PC Stale Audit` task; each `check` prints the top candidates. "No evidence" means unverified, not proven-unused — confirm with the user before removal; redistributables/security deps are never suggested.
 - When the user chooses an action: `act --suggestion ID --action "what was done"`.
