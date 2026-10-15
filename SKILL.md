@@ -5,7 +5,7 @@ description: Monitor Windows PC RAM/CPU performance, generate timestamped report
 
 # PC Performance Monitor
 
-Goal: Monitor RAM/CPU usage, generate a report, notify the user with a summary, suggest solutions, and only act after approval. Supports automatic runs every 4 hours via Task Scheduler.
+Goal: Monitor RAM/CPU usage, generate a report, notify the user with a summary, suggest solutions, and only act after approval. Supports automatic runs on a schedule via Task Scheduler.
 
 ## Workflow
 
@@ -76,13 +76,13 @@ Choose only from evidence:
 - SearchIndexer / Antimalware high: suggest wait for indexing/scan to finish, not kill.
 Never suggest registry edits, disabling services, or third-party cleaners.
 
-### 6. Automatic run every 4 hours via Task Scheduler
-Only set up when user explicitly asks for auto-monitoring / every 4 hours. Steps:
-1. Confirm script path, report path, and DB path with user.
+### 6. Automatic runs via Task Scheduler
+Only set up when user explicitly asks for auto-monitoring. Ask for the interval (e.g. every 1 hour). Steps:
+1. Confirm script path, report path, DB path, and interval with user.
 2. The task runs `run_check.bat` (in working dir), which calls `perf_agent.py check` WITHOUT `--auto`: history is logged and approved rules are only suggested, never executed headlessly, until the user explicitly allows `--auto`.
-3. Create task (run in shell):
+3. Create task (run in shell, N = interval in hours):
 ```
-schtasks /Create /TN "PC Performance Monitor Py" /TR "<working-dir>\run_check.bat" /SC HOURLY /MO 4 /F
+schtasks /Create /TN "PC Performance Monitor Py" /TR "<working-dir>\run_check.bat" /SC HOURLY /MO N /F
 ```
 PowerShell alternative: replace /TR with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File '<skill-script-path>\monitor.ps1' -Top 5 -ReportPath '<report-path>'`.
 NOTE: schtasks /TR is limited to 261 chars — always use the .bat wrapper, never inline the full python command.
