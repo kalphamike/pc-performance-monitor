@@ -2,7 +2,7 @@
 
 **A report-first Windows PC monitoring agent that learns which fixes actually worked — and proposes autonomous rules that only you can approve.**
 
-Built for [OpenCode](https://opencode.ai) as a skill (`SKILL.md`), with standalone scripts that also run without any agent.
+Built as a standalone tool with optional agent instructions (`SKILL.md`), with standalone scripts that also run without any agent.
 
 # PC Performance Monitor
 
@@ -15,7 +15,7 @@ Built for [OpenCode](https://opencode.ai) as a skill (`SKILL.md`), with standalo
 
 **A report-first Windows PC monitoring agent that learns which fixes actually worked — and proposes autonomous rules that only you can approve.**
 
-Built for [OpenCode](https://opencode.ai) as a skill (`SKILL.md`), with standalone scripts that also run without any agent.
+Built as a standalone tool with optional agent instructions (`SKILL.md`), with standalone scripts that also run without any agent.
 
 ![Field results](docs/field_results.png)
 
@@ -373,7 +373,7 @@ A full security audit is available in `SECURITY.md` (or `security_audit.md` in t
 
 ```
 pc-performance-monitor/
-├── SKILL.md                 # agent instructions (OpenCode skill)
+├── SKILL.md                 # agent instructions
 ├── README.md                # this file
 ├── LICENSE                  # MIT
 ├── .gitignore               # excludes runtime data
@@ -445,8 +445,8 @@ A: No. It only reads metrics and writes reports/logs. It never deletes, uninstal
 **Q: Does it work on Windows 10?**
 A: Yes. Tested on Windows 11, should work on Windows 10 with Python 3.10+.
 
-**Q: Can I use it without OpenCode?**
-A: Yes. The scripts work standalone. `SKILL.md` is for OpenCode integration; the scripts work from any terminal.
+**Q: Can I use it standalone?**
+A: Yes. The scripts work standalone from any terminal.
 
 **Q: How much disk space does it use?**
 A: The scripts are ~50 KB. Runtime data (report + DB + stale cache) grows slowly — expect <5 MB after a year of hourly checks.
@@ -522,4 +522,4 @@ See [CHANGELOG.md](CHANGELOG.md) for full details.
 
 ---
 
-*Built with [OpenCode](https://opencode.ai) · Tested on Windows 11 Pro · Python 3.14*
+*Tested on Windows 11 Pro · Python 3.14*

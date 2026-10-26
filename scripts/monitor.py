@@ -1,7 +1,7 @@
 # PC Performance Monitor (Python) — report only, never auto-fix.
 # Run once manually:
 #   python monitor.py --top 5 --report "C:\path\to\performance_report.txt"
-# Scheduled every 4h via Task Scheduler (see SKILL.md step 6).
+# Scheduled every 4h via Task Scheduler (see README scheduling section).
 # Deps: pip install psutil plyer
 
 import argparse

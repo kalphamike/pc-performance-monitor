@@ -74,7 +74,7 @@ Any contribution must maintain these invariants:
 
 ```
 pc-performance-monitor/
-├── SKILL.md                 # agent instructions (OpenCode skill)
+├── SKILL.md                 # agent instructions
 ├── README.md                # user documentation
 ├── LICENSE                  # MIT
 ├── .gitignore               # excludes runtime data

@@ -1,4 +1,4 @@
-# PC Performance Monitor - bundled skill script
+# PC Performance Monitor - bundled script
 # Usage:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File monitor.ps1 -Top 5 -ReportPath "C:\path\to\performance_report.txt"
 param(
