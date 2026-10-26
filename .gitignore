@@ -1,20 +1,45 @@
-# Runtime data (personal process history - never commit)
+# Runtime data (personal process history — never commit)
 performance_report.txt
 performance_history.db
 stale_report.json
+ram_watch_state.json
 *.db
 *.log
+*.aodl
+*.otc
+*.otc-shm
+*.otc-wal
 
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 .venv/
 venv/
+env/
+.env
+*.egg-info/
+dist/
+build/
 
 # Windows
 Thumbs.db
 Desktop.ini
+$RECYCLE.BIN/
+*.lnk
 
-# Editors
+# Editors / IDEs
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
+~$*
