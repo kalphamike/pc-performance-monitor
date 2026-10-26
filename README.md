@@ -4,10 +4,20 @@
 
 Built for [OpenCode](https://opencode.ai) as a skill (`SKILL.md`), with standalone scripts that also run without any agent.
 
+# PC Performance Monitor
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-![Platform: Windows 10/11](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue)
-![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-yellow)
-![No network calls](https://img.shields.io/badge/Network-None-success)
+[![Platform: Windows 10/11](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue?logo=windows)](https://github.com/YOUR_USERNAME/pc-performance-monitor)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-yellow?logo=python&logoColor=white)](https://www.python.org)
+[![No network calls](https://img.shields.io/badge/Network-None-success)](SECURITY.md)
+[![GitHub stars](https://img.shields.io/github/stars/YOUR_USERNAME/pc-performance-monitor?style=social)](https://github.com/YOUR_USERNAME/pc-performance-monitor)
+[![GitHub release](https://img.shields.io/github/v/release/YOUR_USERNAME/pc-performance-monitor?label=version)](https://github.com/YOUR_USERNAME/pc-performance-monitor/releases)
+
+**A report-first Windows PC monitoring agent that learns which fixes actually worked — and proposes autonomous rules that only you can approve.**
+
+Built for [OpenCode](https://opencode.ai) as a skill (`SKILL.md`), with standalone scripts that also run without any agent.
+
+![Field results](docs/field_results.png)
 
 ---
 
@@ -62,6 +72,20 @@ agent:     propose rules (inert)  →  you approve  →  apply (logged)
 6. **Propose** — after enough resolved history, derives rule candidates. Stored **unapproved** — inert.
 7. **Approve** — you review and approve (or reject) each proposal.
 8. **Apply** — executes one approved rule, logs action + outcome automatically.
+
+---
+
+## Try it now (no setup needed)
+
+Want to see what it does before installing? Run the lightweight check (no database, no setup):
+
+```powershell
+cd pc-performance-monitor
+pip install psutil plyer
+python scripts\monitor.py
+```
+
+This prints a one-shot report to your terminal. No files written, no DB created. If you like it, run `init` to start the full learning loop.
 
 ---
 
@@ -467,6 +491,8 @@ python scripts\perf_agent.py stale --min-mb 100
 
 From one evening of real usage on an HP Pavilion Gaming 15 (Win 11, 17 GB RAM, 255 GB NVMe + 500 GB HDD):
 
+![Field results](docs/field_results.png)
+
 | # | Finding | Action | Result |
 |---|---|---|---|
 | 1 | Orphaned `cmd.exe` 2 GB, 333% CPU | Killed PID (parent dead, no children) | RAM 66.4→63.5%, CPU 25→4.7% |
@@ -486,9 +512,13 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-## Changelog
+## Versions
 
-See [CHANGELOG.md](CHANGELOG.md) for version history.
+| Version | Date | Highlights |
+|---|---|---|
+| 1.0.0 | 2026-10-26 | Initial release: report-first monitor, learning loop, gated autonomy, stale watch, RAM tripwire, Edge policy docs |
+
+See [CHANGELOG.md](CHANGELOG.md) for full details.
 
 ---
 
